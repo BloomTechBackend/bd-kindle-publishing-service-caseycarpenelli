@@ -53,7 +53,7 @@ public class GetBookResponse {
     public static Builder builder() {return new Builder();}
 
     public static final class Builder {
-        private Book book;
+        Book book;
         private List<BookRecommendation> recommendations;
 
         private Builder() {

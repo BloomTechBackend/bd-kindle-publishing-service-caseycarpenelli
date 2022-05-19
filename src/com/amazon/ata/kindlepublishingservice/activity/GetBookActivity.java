@@ -38,6 +38,7 @@ public class GetBookActivity {
         this.recommendationServiceClient = recommendationServiceClient;
     }
 
+
     /**
      * Retrieves the book associated with the provided book id.
      *
@@ -54,4 +55,5 @@ public class GetBookActivity {
             .withRecommendations(RecommendationsCoralConverter.toCoral(recommendations))
             .build();
     }
+
 }
