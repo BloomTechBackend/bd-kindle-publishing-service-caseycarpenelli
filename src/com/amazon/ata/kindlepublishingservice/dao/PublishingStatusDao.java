@@ -78,4 +78,26 @@ public class PublishingStatusDao {
         dynamoDbMapper.save(item);
         return item;
     }
+
+    //the design document says that the get publishing status needs to accept a publishingStatusId
+    //im assuming that isn't a typo for publishingRecordId
+    //it makes sense to accept a publishingRecordId from the publishingStatusItem class
+    // because it is the hash key needed to return the necessary entry in the table
+    //this method should return the status and message and BookID so that getPublishingStatusActivity can use it.
+    public List<PublishingStatusItem> getPublishingStatus(String publishingRecordId) {
+        PublishingStatusItem publishingStatusItem = new PublishingStatusItem();
+        publishingStatusItem.setPublishingRecordId(publishingRecordId);
+        //this queries it with just the hashkey and returns all entries under the same publishingRecordId
+        DynamoDBQueryExpression<PublishingStatusItem> queryExpression =
+                new DynamoDBQueryExpression<PublishingStatusItem>()
+                        .withHashKeyValues(publishingStatusItem);
+
+        List<PublishingStatusItem> result = dynamoDbMapper.query(PublishingStatusItem.class, queryExpression);
+
+        if (result.isEmpty()) {
+            throw new PublishingStatusNotFoundException("no record for the record id of " + publishingRecordId);
+        }
+
+        return result;
+    }
 }

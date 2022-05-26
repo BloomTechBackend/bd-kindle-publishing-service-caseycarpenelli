@@ -1,0 +1,205 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.amazon.ata.kindlepublishingservice.dao.PublishingStatusDao",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1414265340 { 
+   	label=amazon
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_110086052 { 
+   	label=ata
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   KindlePublishingUtils757899013[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)KindlePublishingUtils</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ generateBookId(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ generatePublishingRecordId(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ generatePublishingStatusMessage(status: PublishingRecordStatus): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+PublishingStatusDao1699127716[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)PublishingStatusDao</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   dynamoDbMapper: DynamoDBMapper [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getPublishingStatus(publishingRecordId: String): PublishingStatusItem</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setPublishingStatus(publishingRecordId: String, publishingRecordStatus: PublishingRecordStatus, bookId: String): PublishingStatusItem</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setPublishingStatus(publishingRecordId: String, publishingRecordStatus: PublishingRecordStatus, bookId: String, message: String): PublishingStatusItem</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+PublishingStatusDaoTest1699127716[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)PublishingStatusDaoTest</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   dynamoDbMapper: DynamoDBMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   publishingStatusDao: PublishingStatusDao [0..1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SubmitBookForPublishingActivity1981761157[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SubmitBookForPublishingActivity</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   bookPublishRequestManager: BookPublishRequestManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   catalogDao: CatalogDao [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   publishingStatusDao: PublishingStatusDao [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ execute(request: SubmitBookForPublishingRequest): SubmitBookForPublishingResponse</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SubmitBookForPublishingActivityTest1981761157[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SubmitBookForPublishingActivityTest</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   activity: SubmitBookForPublishingActivity [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   publishingStatusDao: PublishingStatusDao [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ execute_bookIdInRequest_bookQueuedForPublishing()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ execute_noBookIdInRequest_bookQueuedForPublishing()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SubmitBookForPublishingActivity_Factory1981761157[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SubmitBookForPublishingActivity_Factory</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   bookPublishRequestManagerProvider: Provider&lt;BookPublishRequestManager&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   catalogDaoProvider: Provider&lt;CatalogDao&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   publishingStatusDaoProvider: Provider&lt;PublishingStatusDao&gt; [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(publishingStatusDaoProvider: Provider&lt;PublishingStatusDao&gt;, catalogDaoProvider: Provider&lt;CatalogDao&gt;, bookPublishRequestManagerProvider: Provider&lt;BookPublishRequestManager&gt;): SubmitBookForPublishingActivity_Factory</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+PublishingStatusDao1699127716 -> KindlePublishingUtils757899013[label="setPublishingStatus() -> generatePublishingStatusMessage()"];
+PublishingStatusDaoTest1699127716 -> PublishingStatusDao1699127716[label="publishingStatusDao
+[0..1]"];
+SubmitBookForPublishingActivity1981761157 -> PublishingStatusDao1699127716[label="publishingStatusDao
+[0..1]"];
+SubmitBookForPublishingActivityTest1981761157 -> PublishingStatusDao1699127716[label="publishingStatusDao
+[0..1]"];
+SubmitBookForPublishingActivityTest1981761157 -> SubmitBookForPublishingActivity1981761157[label="activity
+[0..1]"];
+SubmitBookForPublishingActivity_Factory1981761157 -> PublishingStatusDao1699127716[label="publishingStatusDaoProvider
+[0..1]"];
+    
+}
+@enduml

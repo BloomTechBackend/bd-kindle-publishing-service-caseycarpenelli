@@ -48,6 +48,15 @@ public class PublishingStatusRecord {
     }
 
     @Override
+    public String toString() {
+        return "PublishingStatusRecord{" +
+                "status='" + status + '\'' +
+                ", statusMessage='" + statusMessage + '\'' +
+                ", bookId='" + bookId + '\'' +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(status, statusMessage, bookId);
     }
@@ -65,7 +74,7 @@ public class PublishingStatusRecord {
         private String statusMessage;
         private String bookId;
 
-        private Builder() {
+        public Builder() {
 
         }
 

@@ -36,8 +36,12 @@ public class SubmitBookForPublishingActivity {
      * @param publishingStatusDao PublishingStatusDao to access the publishing status table.
      */
     @Inject
-    public SubmitBookForPublishingActivity(PublishingStatusDao publishingStatusDao) {
+    public SubmitBookForPublishingActivity(PublishingStatusDao publishingStatusDao,
+                                           CatalogDao catalogDao,
+                                           BookPublishRequestManager bookPublishRequestManager) {
         this.publishingStatusDao = publishingStatusDao;
+        this.catalogDao = catalogDao;
+        this.bookPublishRequestManager = bookPublishRequestManager;
     }
 
     /**
@@ -57,12 +61,20 @@ public class SubmitBookForPublishingActivity {
 
         if (request.getBookId() == null) {
             //new book submission if request doesn't have a book id
-
+            bookPublishRequestManager.addBookPublishRequest(BookPublishRequestConverter.toBookPublishRequest(request));
+            PublishingStatusItem item =  publishingStatusDao.setPublishingStatus(bookPublishRequest.getPublishingRecordId(),
+                    PublishingRecordStatus.QUEUED,
+                    bookPublishRequest.getBookId());
+            return SubmitBookForPublishingResponse.builder()
+                    .withPublishingRecordId(item.getPublishingRecordId())
+                    .build();
         }
 
         //submitbookforpublishingrequest needs to call the request manager to properly function
         //also it needs to pass through the request converter to be the right format
 
+
+        //i can see this is redundant
         bookPublishRequestManager.addBookPublishRequest(BookPublishRequestConverter.toBookPublishRequest(request));
 
         if (!catalogDao.validateBookExists(request.getBookId())) {

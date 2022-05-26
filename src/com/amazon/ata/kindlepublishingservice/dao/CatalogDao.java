@@ -56,16 +56,23 @@ public class CatalogDao {
         //validateBookExists says it needs to be void but im confused on how that would be used so for now
         //im going to make it return a boolean so i can use the value it returns in my other logic
     public boolean validateBookExists(String bookId) {
-//        CatalogItemVersion book = getLatestVersionOfBook(bookId);
-//        if (book == null || book.isInactive()) {
-//            throw new BookNotFoundException(String.format("No book found for id: %s", bookId));
-//        }
-        CatalogItemVersion catalogItemVersion = dynamoDbMapper.load(CatalogItemVersion.class, bookId);
-        if (catalogItemVersion == null || catalogItemVersion.isInactive()) {
-            throw new BookNotFoundException(String.format("No book found for id: %s", bookId));
-        } else {
-            return true;
+        //creates new CatalogItemVersion object and assigns it the value that was passed in
+        CatalogItemVersion catalogItemVersion = new CatalogItemVersion();
+        catalogItemVersion.setBookId(bookId);
+
+        //this queries the table with the book id as the hash
+        DynamoDBQueryExpression<CatalogItemVersion> queryExpression = new DynamoDBQueryExpression()
+                .withHashKeyValues(catalogItemVersion)
+                .withScanIndexForward(false)
+                .withLimit(1);
+
+        List<CatalogItemVersion> results = dynamoDbMapper.query(CatalogItemVersion.class, queryExpression);
+        //this weeds out the bookid queries that dont exists
+        if (results.isEmpty()) {
+            return false;
         }
+        return true;
+
 
     }
 

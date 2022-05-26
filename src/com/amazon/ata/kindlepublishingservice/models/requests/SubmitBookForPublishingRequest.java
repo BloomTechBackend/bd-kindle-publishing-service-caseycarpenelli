@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class SubmitBookForPublishingRequest {
     private String bookId;
+
     private String title;
     private String author;
     private String text;
