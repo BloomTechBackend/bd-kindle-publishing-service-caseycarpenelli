@@ -11,6 +11,7 @@ import com.amazon.ata.kindlepublishingservice.enums.PublishingRecordStatus;
 import com.amazon.ata.kindlepublishingservice.publishing.BookPublishRequest;
 
 import com.amazon.ata.kindlepublishingservice.publishing.BookPublishRequestManager;
+import com.amazon.ata.kindlepublishingservice.utils.KindlePublishingUtils;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.commons.lang3.StringUtils;
@@ -62,10 +63,12 @@ public class SubmitBookForPublishingActivity {
         if (request.getBookId() == null) {
             //new book submission if request doesn't have a book id
 
+//            request.setBookId(KindlePublishingUtils.generateBookId());
+
             PublishingStatusItem item =  publishingStatusDao.setPublishingStatus(bookPublishRequest.getPublishingRecordId(),
                     PublishingRecordStatus.QUEUED,
                     bookPublishRequest.getBookId());
-            
+
             bookPublishRequestManager.addBookPublishRequest(BookPublishRequestConverter.toBookPublishRequest(request));
             return SubmitBookForPublishingResponse.builder()
                     .withPublishingRecordId(item.getPublishingRecordId())

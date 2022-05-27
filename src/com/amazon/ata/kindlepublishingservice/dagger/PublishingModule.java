@@ -4,7 +4,7 @@ import com.amazon.ata.kindlepublishingservice.publishing.BookPublishRequestManag
 import com.amazon.ata.kindlepublishingservice.publishing.BookPublishTask;
 import com.amazon.ata.kindlepublishingservice.publishing.BookPublisher;
 
-import com.amazon.ata.kindlepublishingservice.publishing.NoOpTask;
+//import com.amazon.ata.kindlepublishingservice.publishing.NoOpTask;
 import dagger.Module;
 import dagger.Provides;
 

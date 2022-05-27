@@ -95,7 +95,6 @@ public class PublishingStatusDao {
         List<PublishingStatusItem> result = dynamoDbMapper.query(PublishingStatusItem.class, queryExpression);
 
 
-
         if (result.isEmpty()) {
             throw new PublishingStatusNotFoundException("no record for the record id of " + publishingRecordId);
         }

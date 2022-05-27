@@ -32,13 +32,14 @@ public class BookPublishTask implements Runnable {
         this.catalogDao = catalogDao;
     }
 
+//    @Override
     public void run() {
 
         //retrieves the next bookPublishRequests and sets it to a new bookPublishRequest
 
         BookPublishRequest bookPublishRequest = bookPublishRequestManager.getBookPublishRequestToProcess();
             try {
-        if (bookPublishRequest.getBookId() == null) {
+        if (bookPublishRequest == null) {
             return;
         }
 
