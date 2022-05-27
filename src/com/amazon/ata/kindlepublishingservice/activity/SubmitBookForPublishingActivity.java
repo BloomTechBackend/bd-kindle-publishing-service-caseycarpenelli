@@ -61,10 +61,12 @@ public class SubmitBookForPublishingActivity {
 
         if (request.getBookId() == null) {
             //new book submission if request doesn't have a book id
-            bookPublishRequestManager.addBookPublishRequest(BookPublishRequestConverter.toBookPublishRequest(request));
+
             PublishingStatusItem item =  publishingStatusDao.setPublishingStatus(bookPublishRequest.getPublishingRecordId(),
                     PublishingRecordStatus.QUEUED,
                     bookPublishRequest.getBookId());
+            
+            bookPublishRequestManager.addBookPublishRequest(BookPublishRequestConverter.toBookPublishRequest(request));
             return SubmitBookForPublishingResponse.builder()
                     .withPublishingRecordId(item.getPublishingRecordId())
                     .build();
