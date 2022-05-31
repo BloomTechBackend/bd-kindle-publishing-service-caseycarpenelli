@@ -63,13 +63,18 @@ public class SubmitBookForPublishingActivity {
         if (request.getBookId() == null) {
             //new book submission if request doesn't have a book id
 
-//            request.setBookId(KindlePublishingUtils.generateBookId());
+            String newBookId = KindlePublishingUtils.generateBookId();
+
+
 
             PublishingStatusItem item =  publishingStatusDao.setPublishingStatus(bookPublishRequest.getPublishingRecordId(),
                     PublishingRecordStatus.QUEUED,
-                    bookPublishRequest.getBookId());
+                    newBookId);
 
-            bookPublishRequestManager.addBookPublishRequest(BookPublishRequestConverter.toBookPublishRequest(request));
+
+
+            bookPublishRequestManager.addBookPublishRequest(bookPublishRequest);
+
             return SubmitBookForPublishingResponse.builder()
                     .withPublishingRecordId(item.getPublishingRecordId())
                     .build();
@@ -80,7 +85,7 @@ public class SubmitBookForPublishingActivity {
 
 
         //i can see this is redundant
-        bookPublishRequestManager.addBookPublishRequest(BookPublishRequestConverter.toBookPublishRequest(request));
+        bookPublishRequestManager.addBookPublishRequest(bookPublishRequest);
 
         if (!catalogDao.validateBookExists(request.getBookId())) {
             throw new BookNotFoundException("test exception");

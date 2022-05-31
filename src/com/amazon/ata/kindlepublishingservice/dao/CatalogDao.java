@@ -80,38 +80,31 @@ public class CatalogDao {
     //not sure if i need to make a new DyanmoDB table or not but for now i will just use the CatalogItemVersions
     public CatalogItemVersion createOrUpdateBook(KindleFormattedBook kindleFormattedBook) {
         //if the book does exist in the table
-        if (validateBookExists(kindleFormattedBook.getBookId())) {
-            CatalogItemVersion newBook = new CatalogItemVersion();
-            newBook.setBookId(kindleFormattedBook.getBookId());
-            newBook.setAuthor(kindleFormattedBook.getAuthor());
-            newBook.setGenre(kindleFormattedBook.getGenre());
-            newBook.setText(kindleFormattedBook.getText());
-            newBook.setTitle(kindleFormattedBook.getTitle());
-            newBook.setInactive(false);
-            int newVersion = dynamoDbMapper.load(newBook.getVersion());
-            newBook.setVersion(newVersion + 1);
-            dynamoDbMapper.save(newBook);
+        if (kindleFormattedBook.getBookId() != null) {
+            if (validateBookExists(kindleFormattedBook.getBookId())) {
+                CatalogItemVersion newBook = new CatalogItemVersion();
+                newBook.setBookId(kindleFormattedBook.getBookId());
+                removeBookFromCatalog(newBook.getBookId());
+                newBook.setAuthor(kindleFormattedBook.getAuthor());
+                newBook.setGenre(kindleFormattedBook.getGenre());
+                newBook.setText(kindleFormattedBook.getText());
+                newBook.setTitle(kindleFormattedBook.getTitle());
+                newBook.setInactive(false);
 
-            if (!validateBookExists(newBook.getBookId())) {
-                PublishingStatusDao publishingStatusDao = new PublishingStatusDao(dynamoDbMapper);
-                //supposed to set the status to failed but can't figure it out
-                //because i would need a publishingRecordId and those are only in requests which i converted it out of
-                throw new BookNotFoundException("Book id " + newBook.getBookId() + " was not in table");
+                newBook.setVersion(getLatestVersionOfBook(newBook.getBookId()).getVersion() + 1);
+
+                dynamoDbMapper.save(newBook);
+
+                if (!validateBookExists(newBook.getBookId())) {
+                    PublishingStatusDao publishingStatusDao = new PublishingStatusDao(dynamoDbMapper);
+                    //supposed to set the status to failed but can't figure it out
+                    //because i would need a publishingRecordId and those are only in requests which i converted it out of
+                    throw new BookNotFoundException("Book id " + newBook.getBookId() + " was not in table");
+                }
+
+                return newBook;
             }
-
-            return newBook;
         }
-
-        //if the book doesn't exist
-        //it was an idea
-//                  KindleFormattedBook newBook = KindleFormattedBook.builder()
-//                    .withBookId(KindlePublishingUtils.generateBookId())
-//                    .withAuthor(kindleFormattedBook.getAuthor())
-//                    .withGenre(kindleFormattedBook.getGenre())
-//                    .withText(kindleFormattedBook.getText())
-//                    .withTitle(kindleFormattedBook.getTitle())
-//                    .build();
-
         CatalogItemVersion newBook = new CatalogItemVersion();
         newBook.setBookId(KindlePublishingUtils.generateBookId());
         newBook.setAuthor(kindleFormattedBook.getAuthor());
@@ -120,10 +113,8 @@ public class CatalogDao {
         newBook.setTitle(kindleFormattedBook.getTitle());
         newBook.setInactive(false);
         newBook.setVersion(1);
-
         dynamoDbMapper.save(newBook);
         return newBook;
-
     }
 
 

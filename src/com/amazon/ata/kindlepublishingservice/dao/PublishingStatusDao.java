@@ -69,6 +69,8 @@ public class PublishingStatusDao {
                 .append(message)
                 .toString();
         }
+        int[] test = new int[10];
+
 
         PublishingStatusItem item = new PublishingStatusItem();
         item.setPublishingRecordId(publishingRecordId);
@@ -91,6 +93,7 @@ public class PublishingStatusDao {
         DynamoDBQueryExpression<PublishingStatusItem> queryExpression =
                 new DynamoDBQueryExpression<PublishingStatusItem>()
                         .withHashKeyValues(publishingStatusItem);
+
 
         List<PublishingStatusItem> result = dynamoDbMapper.query(PublishingStatusItem.class, queryExpression);
 
